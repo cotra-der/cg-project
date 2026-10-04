@@ -75,8 +75,12 @@ std::vector<PointBatch> generateFace(const FaceModel& f,bool fill) {
 std::vector<PointBatch> generateDemo(int mode,int w,int h) {
     const Color cyan{.25f,.85f,.9f},pink{1.f,.4f,.6f};
     std::vector<PointBatch> out;
-    if(mode<=2) {
-        for(int i=0;i<16;++i) {double a=i*6.283185307179586/16;int x=w/2+int(w*.34*std::cos(a)),y=h/2+int(h*.34*std::sin(a));out.push_back({mode==1?drawDDA(w/2,h/2,x,y):drawBresenham(w/2,h/2,x,y),cyan});}
+    if(mode==1) {
+        // One unmistakable DDA example: shallow positive slope.
+        out.push_back({drawDDA(int(w*.16),int(h*.72),int(w*.84),int(h*.28)),cyan});
+    } else if(mode==2) {
+        // One unmistakable Bresenham example: steep negative slope.
+        out.push_back({drawBresenham(int(w*.28),int(h*.18),int(w*.66),int(h*.84)),pink});
     } else if(mode==3) {
         std::vector<PointF> p={{w*.15f,h*.7f},{w*.3f,h*.05f},{w*.65f,h*.95f},{w*.85f,h*.3f}};
         out.push_back({connect(rounded(p),true),pink});out.push_back({connect(cubicBezier(p[0],p[1],p[2],p[3])),cyan});
